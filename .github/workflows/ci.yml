@@ -21,6 +21,10 @@ jobs:
         run: vendor/bin/sail up --wait
       - name: Run static analyze
         run: vendor/bin/sail bin phpcs
+      - name: Run dochead license checker
+        run: vendor/bin/sail bin docheader check app bootstrap/app.php config database public routes tests
+      - name: Generate app key
+        run: vendor/bin/sail artisan key:generate
       - name: Run migrations
         run: vendor/bin/sail artisan migrate:fresh
       - name: Seed database
