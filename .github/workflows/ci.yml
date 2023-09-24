@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push: ~
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+      - name: Install composer
+        run: composer install --no-interaction --no-progress --no-scripts --prefer-dist
+      - name: Start services
+        run: vendor/bin/sail up --detach --wait
+      - name: Run static analyze
+        run: vendor/bin/sail exec -T laravel vendor/bin/phpcs
+      - name: Run migrations
+        run: vendor/bin/sail exec -T laravel artisan migrate:fresh
+      - name: Seed database
+        run: vendor/bin/sail exec -T laravel artisan db:seed
+      - name: Run phpunit
+        run: vendor/bin/sail exec -T laravel
