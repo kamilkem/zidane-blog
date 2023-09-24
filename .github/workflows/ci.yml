@@ -15,13 +15,15 @@ jobs:
           php-version: '8.1'
       - name: Install composer
         run: composer install --no-interaction --no-progress --no-scripts --prefer-dist
+      - name: Copy .env
+        run: cp .env.example .env
       - name: Start services
-        run: vendor/bin/sail up --detach --wait
+        run: vendor/bin/sail up --wait
       - name: Run static analyze
-        run: vendor/bin/sail exec -T laravel vendor/bin/phpcs
+        run: vendor/bin/sail bin phpcs
       - name: Run migrations
-        run: vendor/bin/sail exec -T laravel artisan migrate:fresh
+        run: vendor/bin/sail artisan migrate:fresh
       - name: Seed database
-        run: vendor/bin/sail exec -T laravel artisan db:seed
+        run: vendor/bin/sail artisan db:seed
       - name: Run phpunit
-        run: vendor/bin/sail exec -T laravel
+        run: vendor/bin/sail artisan test

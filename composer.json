@@ -16,6 +16,7 @@
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
+        "malukenho/docheader": "^1.0",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "phpunit/phpunit": "^10.1",
@@ -50,7 +51,9 @@
         ],
         "linter:check": "@php vendor/bin/phpcs",
         "linter:fix": "@php vendor/bin/phpcbf",
+        "dochead:check": "@php vendor/bin/docheader check app bootstrap/app.php config database public routes tests",
         "ci:check": [
+            "@dochead:check",
             "@linter:check"
         ]
     },
