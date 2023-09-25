@@ -33,7 +33,7 @@ class JsonExceptionRenderer
     {
         $this->generateResponseFromException($exception);
 
-        if (app()->environment('local')) {
+        if (app()->environment('local') || app()->environment('testing')) {
             $this->response['message'] = $this->response['message'] ?? $exception->getMessage();
             $this->response['trace'] = $exception->getTrace();
         }

@@ -46,7 +46,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
 
-            if ($this->app->environment('local')) {
+            if ($this->app->environment('local') || $this->app->environment('testing')) {
                 Route::middleware('web')
                     ->group(base_path('routes/web.php'));
             }
