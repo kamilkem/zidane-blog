@@ -16,6 +16,8 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
+use function app;
+
 class Handler extends ExceptionHandler
 {
     /**
