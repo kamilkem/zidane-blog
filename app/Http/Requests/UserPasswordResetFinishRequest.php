@@ -15,13 +15,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AuthLoginRequest extends FormRequest
+class UserPasswordResetFinishRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email|exists:users,email',
-            'password' => 'required|string',
+            'token' => 'required|string',
+            'password' => 'required|string|confirmed',
         ];
     }
 }

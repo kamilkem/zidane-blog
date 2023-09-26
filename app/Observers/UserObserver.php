@@ -11,11 +11,17 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Observers;
 
-use Illuminate\Contracts\Pagination\Paginator;
+use App\Events\UserRegistrationInit;
+use App\Models\User;
 
-interface EntryRepositoryInterface
+use function event;
+
+class UserObserver
 {
-    public function getPaginatedEntries(int $itemsPerPage = 10): Paginator;
+    public function creating(User $user): void
+    {
+        event(new UserRegistrationInit($user));
+    }
 }

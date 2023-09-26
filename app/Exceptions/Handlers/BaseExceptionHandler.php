@@ -19,7 +19,7 @@ class BaseExceptionHandler implements ExceptionHandlerInterface
 {
     public int $code = Response::HTTP_INTERNAL_SERVER_ERROR;
     public bool $error = true;
-    public mixed $message = '';
+    public mixed $message = null;
 
     public function __invoke(\Exception $exception): array
     {

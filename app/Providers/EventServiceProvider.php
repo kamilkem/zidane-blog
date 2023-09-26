@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Events\UserPasswordResetInit;
+use App\Events\UserRegistrationInit;
+use App\Listeners\GrantUserDefaultRole;
+use App\Listeners\SendUserPasswordResetInitNotification;
+use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -29,6 +34,12 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        UserRegistrationInit::class => [
+            GrantUserDefaultRole::class,
+        ],
+        UserPasswordResetInit::class => [
+            SendUserPasswordResetInitNotification::class,
+        ],
     ];
 
     /**
@@ -36,7 +47,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        User::observe(UserObserver::class);
     }
 
     /**

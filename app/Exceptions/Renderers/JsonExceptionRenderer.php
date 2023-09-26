@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace App\Exceptions\Renderers;
 
+use App\Exceptions\Handlers\AuthenticationExceptionHandler;
 use App\Exceptions\Handlers\BaseExceptionHandler;
+use App\Exceptions\Handlers\NotFoundHttpExceptionHandler;
 use App\Exceptions\Handlers\ValidationExceptionHandler;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use function app;
 
@@ -25,6 +29,8 @@ class JsonExceptionRenderer
 {
     public array $handlerCasts = [
         ValidationException::class => ValidationExceptionHandler::class,
+        NotFoundHttpException::class => NotFoundHttpExceptionHandler::class,
+        AuthenticationException::class => AuthenticationExceptionHandler::class,
     ];
 
     public mixed $response;

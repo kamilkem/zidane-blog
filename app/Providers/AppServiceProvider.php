@@ -20,6 +20,10 @@ use App\Repository\UserRepository;
 use App\Repository\UserRepositoryInterface;
 use App\Services\Auth\AuthService;
 use App\Services\Auth\AuthServiceInterface;
+use App\Services\Entry\EntryService;
+use App\Services\Entry\EntryServiceInterface;
+use App\Services\User\UserService;
+use App\Services\User\UserServiceInterface;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Telescope\TelescopeServiceProvider;
@@ -40,6 +44,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Services
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
+        $this->app->bind(UserServiceInterface::class, UserService::class);
+        $this->app->bind(EntryServiceInterface::class, EntryService::class);
 
         // Exception
         if (request()->expectsJson() || request()->wantsJson() || request()->acceptsJson()) {

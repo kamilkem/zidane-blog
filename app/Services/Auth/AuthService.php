@@ -29,8 +29,7 @@ class AuthService implements AuthServiceInterface
 
     public function login(array $credentials): NewAccessToken
     {
-        /** @var User $user */
-        $user = $this->userRepository->getUserByEmail($credentials['email'])->first();
+        $user = $this->userRepository->findByEmail($credentials['email']);
 
         if (!$user || !$user->checkPassword($credentials['password'])) {
             throw new UnauthorizedHttpException('api', __('Invalid credentials provided.'));

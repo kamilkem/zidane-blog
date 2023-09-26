@@ -13,9 +13,16 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\User;
+use Illuminate\Contracts\Pagination\Paginator;
 
 interface UserRepositoryInterface
 {
-    public function getUserByEmail(string $email): Builder;
+    public function find(int $id): ?User;
+
+    public function findByEmail(string $email): ?User;
+
+    public function getPaginatedUsers(int $itemsPerPage = 10): Paginator;
+
+    public function updatePassword(User $user, string $hashedPassword): void;
 }

@@ -15,6 +15,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Entry;
+use App\Models\RoleEnum;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -39,11 +40,11 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'manage-entries']);
 
         /** @var Role $adminRole */
-        $adminRole = Role::create(['name' => 'Admin']);
+        $adminRole = Role::create(['name' => RoleEnum::ROLE_ADMIN->value]);
         /** @var Role $editorRole */
-        $editorRole = Role::create(['name' => 'Editor']);
+        $editorRole = Role::create(['name' => RoleEnum::ROLE_EDITOR->value]);
         /** @var Role $userRole */
-        $userRole = Role::create(['name' => 'User']);
+        $userRole = Role::create(['name' => RoleEnum::ROLE_USER->value]);
 
         $adminRole->givePermissionTo([
             'manage-users',
@@ -53,35 +54,37 @@ class DatabaseSeeder extends Seeder
             'manage-entries'
         ]);
 
-        User::factory()
-            ->create([
-                'name' => 'Zidane',
-                'email' => sprintf('admin@%s', self::EMAIL_DOMAIN),
-            ])
-            ->assignRole($adminRole);
-
-        for ($i = 0; $i < 3; $i++) {
+        if (app()->environment('local')) {
             User::factory()
                 ->create([
-                    'email' => sprintf('editor_%d@%s', $i, self::EMAIL_DOMAIN)
+                    'name' => 'Zidane',
+                    'email' => sprintf('admin@%s', self::EMAIL_DOMAIN),
                 ])
-                ->each(function (User $user) use ($editorRole) {
-                    $user->assignRole($editorRole);
+                ->assignRole($adminRole);
 
-                    Entry::factory()
-                        ->count(10)
-                        ->create([
-                            'user_id' => $user->id
-                        ]);
-                });
-        }
+            for ($i = 0; $i < 3; $i++) {
+                User::factory()
+                    ->create([
+                        'email' => sprintf('editor_%d@%s', $i, self::EMAIL_DOMAIN)
+                    ])
+                    ->each(function (User $user) use ($editorRole) {
+                        $user->assignRole($editorRole);
 
-        for ($i = 0; $i < 5; $i++) {
-            User::factory()
-                ->create([
-                    'email' => sprintf('user_%d@%s', $i, self::EMAIL_DOMAIN)
-                ])
-                ->assignRole($userRole);
+                        Entry::factory()
+                            ->count(10)
+                            ->create([
+                                'user_id' => $user->id
+                            ]);
+                    });
+            }
+
+            for ($i = 0; $i < 5; $i++) {
+                User::factory()
+                    ->create([
+                        'email' => sprintf('user_%d@%s', $i, self::EMAIL_DOMAIN)
+                    ])
+                    ->assignRole($userRole);
+            }
         }
     }
 }

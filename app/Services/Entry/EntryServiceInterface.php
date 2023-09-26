@@ -11,11 +11,15 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Services\Entry;
 
-use Illuminate\Contracts\Pagination\Paginator;
+use App\Models\Entry;
 
-interface EntryRepositoryInterface
+interface EntryServiceInterface
 {
-    public function getPaginatedEntries(int $itemsPerPage = 10): Paginator;
+    public function store(array $validated): Entry;
+
+    public function update(Entry $entry, array $validated): Entry;
+
+    public function delete(Entry $entry): ?bool;
 }

@@ -11,11 +11,16 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Models;
 
-use Illuminate\Contracts\Pagination\Paginator;
-
-interface EntryRepositoryInterface
+enum RoleEnum: string
 {
-    public function getPaginatedEntries(int $itemsPerPage = 10): Paginator;
+    case ROLE_ADMIN = 'Admin';
+    case ROLE_EDITOR = 'Editor';
+    case ROLE_USER = 'User';
+
+    public static function getDefaultRole(): self
+    {
+        return self::ROLE_USER;
+    }
 }

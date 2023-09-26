@@ -15,12 +15,11 @@ namespace App\Repository;
 
 use App\Models\Entry;
 use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Eloquent\Collection;
 
 class EntryRepository implements EntryRepositoryInterface
 {
-    public function getAllEntries(): Collection
+    public function getPaginatedEntries(int $itemsPerPage = 10): Paginator
     {
-        return Entry::all();
+        return Entry::whereNotNull('published_at')->orderBy('published_at', 'desc')->paginate($itemsPerPage);
     }
 }

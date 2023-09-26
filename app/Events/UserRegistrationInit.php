@@ -11,11 +11,16 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Events;
 
-use Illuminate\Contracts\Pagination\Paginator;
+use App\Models\User;
+use Illuminate\Queue\SerializesModels;
 
-interface EntryRepositoryInterface
+class UserRegistrationInit
 {
-    public function getPaginatedEntries(int $itemsPerPage = 10): Paginator;
+    use SerializesModels;
+
+    public function __construct(public User $user)
+    {
+    }
 }

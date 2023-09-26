@@ -11,11 +11,12 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Exceptions\Handlers;
 
-use Illuminate\Contracts\Pagination\Paginator;
+use Symfony\Component\HttpFoundation\Response;
 
-interface EntryRepositoryInterface
+class NotFoundHttpExceptionHandler extends BaseExceptionHandler
 {
-    public function getPaginatedEntries(int $itemsPerPage = 10): Paginator;
+    public int $code = Response::HTTP_NOT_FOUND;
+    public mixed $message = 'Not found.';
 }

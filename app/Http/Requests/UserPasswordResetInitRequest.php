@@ -11,11 +11,16 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Http\Requests;
 
-use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Foundation\Http\FormRequest;
 
-interface EntryRepositoryInterface
+class UserPasswordResetInitRequest extends FormRequest
 {
-    public function getPaginatedEntries(int $itemsPerPage = 10): Paginator;
+    public function rules(): array
+    {
+        return [
+            'email' => 'required|string|email',
+        ];
+    }
 }

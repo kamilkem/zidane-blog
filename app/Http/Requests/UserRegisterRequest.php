@@ -15,13 +15,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AuthLoginRequest extends FormRequest
+class UserRegisterRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email|exists:users,email',
-            'password' => 'required|string',
+            'name' => 'required|string|min:3|max:15',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
         ];
     }
 }
